@@ -27,26 +27,26 @@
 \begin{document}
 \title{\textit{Knight's Tour:  El problema del Caballo}}
 \author{Ignacio Figueroa Ram\'irez \\Sebasti\'an Herrera Corrales\\ Felipe Samur Sansur\\ Universidad T\'ecnica Federico Santa Mar\'ia \\ Avenida Vicu\~na Mackenna 3939,San Joaqu\'in, Santiago, Chile \\
-\{ignacio.figueroara, sebastian.herrerac, jorge.samur\}@sansano.usm.cl\\
-Longitud máxima: 2 planas}
+\{ignacio.figueroara, sebastian.herrerac, jorge.samur\}@sansano.usm.cl}
 \maketitle
 
 \begin{abstract}
-\textbf{El protagonista de este artículo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que ha día de hoy sigue siendo de interés, debido a que gira en torno al caballo del ajedrez (la pieza que sin duda tiene el movimiento más curioso del set), y a la interminable cantidad de soluciones distintas que se le han encontrado. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundiad en qué consiste el problema y como puede ser abordado y solucionado de distintas maneras gracias al aporte de distintos emblemáticos personajes de la matemática. }
+\textbf{El protagonista de este art\'iculo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que ha día de hoy sigue siendo de interés, debido a que gira en torno al caballo del ajedrez (la pieza que sin duda tiene el movimiento más curioso del set), y a la interminable cantidad de soluciones distintas que se le han encontrado. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundiad en qué consiste el problema y como puede ser abordado y solucionado de distintas maneras gracias al aporte de distintos emblemáticos personajes de la matemática. }
 \end{abstract}
 
 \begin{IEEEkeywords}
-Knight's Tour Problem, Leonhard Euler, Camino Hamiltonian, Regla de Warnsdorff.
+Knight's Tour Problem, Problema del Cablallo, Leonhard Euler, Camino Hamiltoniano, Regla de Warnsdorff, Divide y Venceras.
 \end{IEEEkeywords}
 
 \section{Introducci\'on}
 El \textit{Knight's Tour Problem} (KTP), o Problema del Caballo, tiene como objetivo encontrar una ruta o camino en un tablero de ajedr\'ez tal que el caballo visite todas las celdas del tablero una sola vez.
 El primer \textit{problema del caballo} data del siglo septimo en un manuscrito \'arabe titulado \textit{La delicia de los inteligentes, una descripci\'on del ajedrez} y contiene dos soluciones \cite{Murray:1913}. Sin embargo, no fue hasta 1766 que el problema fue analizado por primera vez en un articulo matem\'atico \cite{Euler:1759} por el conocido Leonhard Euler, art\'iculo que sento bases para ensayos futuros. El concepto de este problema puede ser aplicado en procesamiento de imagenes, dado que el tablero de ajedrez puede emular una matriz de pixeles \cite{Xiaoyong:2017}.\\
-En las siguientes secciones se profundizara m\'as acerca de este problema. En la secci\'on $II$ se profundizar\'a acerca de los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a mas detalladamente con un ejemplo. La secci\'on $III$ se concentrara en [falta]. Finalmente se presentar\'an conclusiones y expectativas para el desarrollo de este problema es futuros informes.
+En las siguientes secciones se profundizara m\'as acerca de este problema. En la secci\'on $II$ se profundizar\'a acerca de los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a mas detalladamente con un ejemplo. La secci\'on $III$ se enfocara en dar contexto acerca de las soluciones del problema y de problemas previos a este. Finalmente se presentar\'an conclusiones y expectativas para el desarrollo de este problema es futuros informes.
+
 %Fundamentación histórica del problema. No olvide citar sus fuentes . Desarrolle en prosa respondiendo las siguientes preguntas: ¿Sobre qué necesidad fue construido el problema? ¿Cuál es su origen? ¿Qué busca solucionar? ¿Por qué se hace interesante resolver el problema? ¿Cómo se aplica en la vida real? Además, no olvide mencionar que abarcará en ésta entrega y cómo estará estructurado el artículo a partir de la siguiente sección (20 pts.).
 
 \section{El Problema}
-De los seis trebejos del juego de ajedrez, en el presente articulo nos concentraremos en uno y en un problema preciso asociado a este. El caballo (\textit{en ingles Knight}) tiene un movimiento inusual entre las piezas de ajedrez. Se puede desplazar dos casillas horizontalmente y una casilla verticalmente o dos casillas en posición vertical y una horizontal. Con lo cual, el movimiento completo se parece a letra "$\mathbb{L}$"  \cite{Uehara:2019}.
+De los seis trebejos del juego de ajedrez, este art\'iculo se concentrara en uno de estos y en un problema preciso asociado a este. El caballo tiene un movimiento inusual entre las piezas de ajedrez, se puede desplazar dos casillas horizontalmente y una casilla verticalmente o dos casillas en posición vertical y una horizontal. Con lo cual, el movimiento completo se parece a letra "$\mathcal{L}$"  \cite{Uehara:2019}.
 
 \begin{figure}[h]
 
@@ -57,7 +57,11 @@ De los seis trebejos del juego de ajedrez, en el presente articulo nos concentra
 
 \end{figure}
 
-El problema del caballo consiste en encontrar una ruta para el caballo en un tablero de ajedrez de tamaño $8 \times 8$, de modo que este visite cada casilla una sola vez. La soluci\'on de este problema se representa como una matriz numerada que indica el orden que siguio el caballo para completa el camino, se conoce como \textit{Knight's Tour Matrix} \cite{Kopec:2016}.
+El problema del caballo consiste en encontrar una ruta para el caballo en un tablero de ajedrez de tamaño $8 \times 8$, de modo que este visite cada casilla una sola vez. La soluci\'on de este problema se representa como una matriz numerada que indica el orden que sigui\'o el caballo para completar el camino \cite{Kopec:2016}.
+
+\begin{example}
+	Una de las soluciones que encontro Euler y que publico en \cite{Euler:1759} es especialmente interesante ya que trabaja con las simetr\'ias del tablero. Euler primero realiza un recorrido  por la mitad inferior del tablero, comenzando en el cuadrado $1$ y terminando en el cuadrado $32$. Luego repite exactamente este mismo recorrido, de manera sim\'etrica, para la parte superior mitad del tablero, comenzando en el cuadrado $33$ y terminando en el cuadrado $64$. El ejemplo se ve a detalle en la \textit{Figura \ref{fig:euler}} 
+\end{example}
 
 \begin{figure}[h]
 
@@ -68,33 +72,46 @@ El problema del caballo consiste en encontrar una ruta para el caballo en un tab
 
 \end{figure}
 
-\begin{example}
-	Una de las soluciones que encontro Euler y que publico en \cite{Euler:1759} es especialmente interesante ya que trabaja con las simetrias del tablero. Euler primero realiza un recorrido  por la mitad inferior del tablero, comenzando en el cuadrado 1 y terminando en el cuadrado 32. Luego repite exactamente este mismo recorrido, de manera sim\'etrica, para la parte superior mitad del tablero, comenzando en el cuadrado 33 y terminando en el cuadrado 64. El ejemplo se puede ver claramente en la \textit{Figura\ref{fig:euler}} 
-\end{example}
-
-
 %En que consiste el problema, sobre que necesidad fue construido y comentarios generales. Preguntas claves: ?`En que consiste mi problema??`Cuales son sus origines??`Que quiero solucionar? (10 ptos) .\\
 
 \section{Estado del arte}
-Con el trabajo de ordenadores se ha descubierto que el problema puede ser solucionado de más de 33 billones de maneras distintas. Distintos matemáticos han aportado su grano de arena al presentar su idea para resolverlo, como por ejemplo el anteriormente mencionado Euler. Hay soluciones que tienen todo tipo de enfoques; pueden ser para tableros de una dimensión fija, otras soluciones pueden servir para cualquier dimensión otorgada al tablero, otros solo para casos pequeños, otros dentro de un rango de dimensiones, etc. A continuación se muestran algunos algoritmos que se han diseñados para resolver el problema a lo largo de la existencia del enigma matemático:\\
-\\\textbf{Warnsdorff’s algorithm for Knight’s Tour}\\
-El Algoritmo de Warnsdorff funciona para tableros con dimensión minima de $5x5$, y consiste en visitar las casillas menos asequibles lo más pronto posible con la finalidad de evitar posibles caminos sin salida y/o arrinconados en un futuro. La Regla de Warnsdorff\cite{Squirrel:1996}, dice que:\\
-\\Habiendo iniciado el camino de una casilla arbitraria: sea la (n+1)-ésima casilla del camino (siendo n la cantidad actual de casillas recorridas), entonces esta casilla:\\
-\\1. Está al alcance de la n-ésima casilla.\\
-2. Aún no ha sido visitada previamente.\\
-3. Es la casilla desde la cual menos movimientos es posible hacer de todas las casillas alcanzables no visitadas de la n-ésima casilla.\\
+Un camino hamiltoniano es un camino que visita cada nodo de un grafo exactamente una vez. Un camino del caballo (\textit{Knight's Tour}) corresponde a un camino hamiltoniano en un grafo cuyos nodos representan las casillas  del tablero, y dos nodos est\'an conectados si un caballo puede moverse entre las casillas seg\'un las reglas del ajedrez \cite{Rosen/2002}.
+
+Los variados algoritmos que sirven para resolver el problema de encontrar un camino hamiltoniano en un grafo simplifican el desarrollo del problema del caballo. Sin embargo, se presentan dos enfoques mas apropiados para el caso. Primero se explica como funciona el 
+
+Con el trabajo de ordenadores se ha descubierto que el problema puede ser solucionado de más de 33 billones de maneras distintas. Distintos matemáticos han aportado su grano de arena al presentar su idea para resolverlo, como por ejemplo el anteriormente mencionado Euler. Hay soluciones que tienen todo tipo de enfoques; pueden ser para tableros de una dimensión fija, otras soluciones pueden servir para cualquier dimensión otorgada al tablero, otros solo para casos pequeños, otros dentro de un rango de dimensiones, etc. A continuación se muestran algunos algoritmos que se han diseñados para resolver el problema a lo largo de la existencia del enigma matemático:
+
+\textbf{Algoritmo basado en Divide y Vencer\'as.}
+
+Una solución al problema son los algoritmos desarrollados por Parberry \cite{Parberry:1997}, quien propone un acercamiento de tipo “dividir y conquistar”. En pocas palabras, Parberry propone separar el tablero en subsecciones de tamaño similar y completar el tour en cada una de estas subsecciones antes de pasar a la siguiente. La propuesta considera distintos algoritmos para distintos tipos de tablero, sin embargo todos se basan en el mismo principio. Este método posee varias ventajas, como su simpleza, ya que los algoritmos son fáciles de entender y demostrar \cite{Parberry:1997}, y también su eficiencia, pues los algoritmos poseen complejidad $\mathcal{O}(n^2)$, lo que implica un tiempo proporcional a la superficie del tablero y por lo tanto lineal en cuanto al área (aunque para un tablero no cuadrado la complejidad seria $\mathcal{O}(n\times m) $ con \textit{n,m} las dimensiones del tablero). Por el contrario, la mayor desventaja del método es que no existe un algoritmo general, es decir a pesar que todos los algoritmos comparten la misma base, la elección va a depender de la configuración $m\times n$ del tablero.
+
+En cuanto a instancias que son interesantes de resolver, dadas las características específicas del problema los casos de estudio siempre se relacionan con la forma del tablero $m \times n$. De éstas, quizás la más popular es la del tablero de ajedrez $8 \times 8$, la cual fue resuelta por Euler \cite{Euler:1759} hace siglos atrás. Parberry \cite{Parberry:1997} describe otros casos más específicos, tales como el tablero $n \times n$, $n \ge 5 \wedge n=\text{impar}$, en el cual existen tours cerrados que pasan por todos los espacios a excepción de una de las esquinas; tours para tableros de tipo $n \times (n+1), n \ge 6$ y algunas propiedades interesantes relacionadas con la simetría de tours para tableros $n \times n, n \ge 10, n$ divisible por $2$ pero no por $4$. Destacar que para cualquier caso, el tablero $n \times n$ mínimo para trabajar es el de $5\times 5$, ya que de considerar $n$ inferior a $5$ existirían espacios inalcanzables.
+
+\textbf{Algoritmo de Warnsdorff.}\\
+El Algoritmo de Warnsdorff (para el problema del caballo) funciona para tableros con dimensión minima de $5\times 5$, y consiste en visitar las casillas menos asequibles lo más pronto posible con la finalidad de evitar posibles caminos sin salida y/o arrinconados en un futuro. La Regla de Warnsdorff\cite{Squirrel:1996}, dice que:
+\begin{quote}
+	Habiendo iniciado el camino de una casilla arbitraria: sea la $(n+1)$-ésima casilla del camino (siendo n la cantidad actual de casillas recorridas), entonces esta casilla:
+	\begin{enumerate}
+		\item Está al alcance de la n-ésima casilla
+		\item Aún no ha sido visitada previamente.
+		\item Es la casilla desde la cual menos movimientos es posible hacer de todas las casillas alcanzables no visitadas de la n-ésima casilla.
+\end{enumerate}
+\end{quote}
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.2\textwidth]{figures/warnsdorff.png}
 \caption{Soluci\'on hecha siguiendo la Regla de Warnsdorff}
-\label{fig:euler}
+\label{fig:warnsdorff}
 \end{figure}
-\\Sin embargo, pueden existir varias ocaciones en que 2 casillas cumplan con las mismas condiciones. Aquí es donde nace la imperfección del algoritmo, pues si bien existen criterios de desempate que han sido creados después de numerosos estudios del algoritmo y tienden a permitir elegir el camino correcto, no son metodologías del todo exactas y pueden aún asi originarse dilemas difíciles de resolver a la hora de elegir un camino, y si se toma una mala decisión el camino podría no terminarse. Además, la regla de Warnsdoff no es confiable por si sola para tableros de muy grandes dimensiones (p.e. $n \geq 200)$, pues estos enfrentamientos de desempate se hacen más recurrentes. Aún así, la Regla de Warnsdorff es bastante efectiva para los rangos sugeridos y una buena opción gracias a su patrón intuitivo y simpleza.
+Sin embargo, pueden existir varias ocaciones en que 2 casillas cumplan con las mismas condiciones. Aquí es donde nace la imperfección del algoritmo, pues si bien existen criterios de desempate que han sido creados después de numerosos estudios del algoritmo y tienden a permitir elegir el camino correcto, no son metodologías del todo exactas y pueden aún asi originarse dilemas difíciles de resolver a la hora de elegir un camino, y si se toma una mala decisión el camino podría no terminarse. Además, la regla de Warnsdoff no es confiable por si sola para tableros de muy grandes dimensiones (p.e. $n \geq 200)$, pues estos enfrentamientos de desempate se hacen más recurrentes. Aún así, la Regla de Warnsdorff es bastante efectiva para los rangos sugeridos y una buena opción gracias a su patrón intuitivo y simpleza.   
 
-Otra solución al problema son los algoritmos desarrollados por Parberry \cite{Parberry:1997}, quien propone un acercamiento de tipo “dividir y conquistar”. En pocas palabras, Parberry propone separar el tablero en subsecciones de tamaño similar y completar el tour en cada una de estas subsecciones antes de pasar a la siguiente. La propuesta considera distintos algoritmos para distintos tipos de tablero, sin embargo todos se basan en el mismo principio. Este método posee varias ventajas, como su simpleza, ya que los algoritmos son fáciles de entender y demostrar \cite{Parberry:1997}, y también su eficiencia, pues los algoritmos poseen complejidad $\mathcal{O}(n^2)$, lo que implica un tiempo proporcional a la superficie del tablero y por lo tanto lineal en cuanto al área. Por el contrario, la mayor desventaja del método es que no existe un algoritmo general, es decir a pesar que todos los algoritmos comparten la misma base, la elección va a depender de la configuración $m\times n$ del tablero.
 
 En cuanto a instancias que son interesantes de resolver, dadas las características específicas del problema los casos de estudio siempre se relacionan con la forma del tablero $m \times n$. De éstas, quizás la más popular es la del tablero de ajedrez $8 \times 8$, la cual fue resuelta por Euler \cite{Euler:1759} hace siglos atrás. Parberry \cite{Parberry:1997} describe otros casos más específicos, tales como el tablero $n \times n$, $n \ge 5 \wedge n=\text{impar}$, en el cual existen tours cerrados que pasan por todos los espacios a excepción de una de las esquinas; tours para tableros de tipo $n \times (n+1), n \ge 6$ y algunas propiedades interesantes relacionadas con la simetría de tours para tableros $n \times n, n \ge 10, n$ divisible por $2$ pero no por $4$. Destacar que para cualquier caso, el tablero $n \times n$ mínimo para trabajar es el de $5\times 5$, ya que de considerar $n$ inferior a $5$ existirían espacios inalcanzables.\\
 En cuanto a aportes del problema, no se han encontrado otros problemas que se vean beneficiados de su aplicación, existen casos partículares como una famosa partida de un torneo de ajedrez en la que uno de los participantes realizó 13 movimientos consecutivos que parecían seguir un Knight's Tour.\cite{Shabazz:2010}.
+
+
+
 
  
 
@@ -103,10 +120,17 @@ En cuanto a aportes del problema, no se han encontrado otros problemas que se ve
 
 
 \section{Conclusiones y Perspectivas}
+El problema del caballo desde sus inicios ha sido un gran aporte a la historia del ajedrez y sus m\'ultiples problemas matem\'aticos dado lo interesante que resulta la cuesti\'on de encontrar un camino tal que cumpla la restricci\'on de ser un camino de Hamilton, y se hace mas atractivo y complicado considerando que se usa la pieza con el moviento m\'as inusual de todo el juego. 
 
-Desarrollo de los aportes de la entrega, resultados y de los futuros pasos a seguir tanto como para las próximas entregas como para desarrollos fuera del curso. El orden es siempre, aportes y en párrafo aparte los trabajos futuros y/o perspectivas. Desarrolle en prosa respondiendo lo siguiente: ¿Cuál es el aporte del problema? ¿Qué es relevante del problema y como se puede seguir mejorando su resolución? ¿Qué se hará a futuro? ¿Qué se podría hacer a futuro? (10 pts.).
+Si bien el problema ha sido desarrollado muchas veces por diferentes matematicos, se vuelve una tarea interesante de resolver para comprender las teorias de optimizasci\'on que siguieron quienes consiguieron resolver el problema en su momento de manera eficiente, tal como lo hizo Parberry.
 
-\newpage
+
+
+
+
+
+%Desarrollo de los aportes de la entrega, resultados y de los futuros pasos a seguir tanto como para las próximas entregas como para desarrollos fuera del curso. El orden es siempre, aportes y en párrafo aparte los trabajos futuros y/o perspectivas. Desarrolle en prosa respondiendo lo siguiente: ¿Cuál es el aporte del problema? ¿Qué es relevante del problema y como se puede seguir mejorando su resolución? ¿Qué se hará a futuro? ¿Qué se podría hacer a futuro? (10 pts.).
+
 
 \section{Referencias}
 \bibliography{bibliografia}
