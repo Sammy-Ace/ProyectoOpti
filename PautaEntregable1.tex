@@ -79,10 +79,10 @@ El problema del caballo consiste en encontrar una ruta para el caballo en un tab
 Con el trabajo de ordenadores se ha descubierto que el problema puede ser solucionado de más de 33 billones de maneras distintas. Distintos matemáticos han aportado su grano de arena al presentar su idea para resolverlo, como por ejemplo el anteriormente mencionado Euler. Hay soluciones que tienen todo tipo de enfoques; pueden ser para tableros de una dimensión fija, otras soluciones pueden servir para cualquier dimensión otorgada al tablero, otros solo para casos pequeños, otros dentro de un rango de dimensiones, etc. A continuación se muestran algunos algoritmos que se han diseñados para resolver el problema a lo largo de la existencia del enigma matemático:\\
 \\\textbf{Warnsdorff’s algorithm for Knight’s Tour}\\
 El Algoritmo de Warnsdorff funciona para tableros con dimensión minima de $5x5$, y consiste en visitar las casillas menos asequibles lo más pronto posible con la finalidad de evitar posibles caminos sin salida y/o arrinconados en un futuro. La Regla de Warnsdorff\cite{Squirrel:1996}, dice que:\\
-\\Eligiendo una casilla inicial arbitraria, y sea la (n+1)-ésima casilla del camino, entonces esta casilla:\\
+\\Habiendo iniciado el camino de una casilla arbitraria: sea la (n+1)-ésima casilla del camino (siendo n la cantidad actual de casillas recorridas), entonces esta casilla:\\
 \\1. Está al alcance de la n-ésima casilla.\\
 2. Aún no ha sido visitada previamente.\\
-3. Es la casilla desde la cual menos movimientos es posible hacer, de todas las casillas alcanzables no visitadas de la n-ésima casilla.\\
+3. Es la casilla desde la cual menos movimientos es posible hacer de todas las casillas alcanzables no visitadas de la n-ésima casilla.\\
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.2\textwidth]{figures/warnsdorff.png}
