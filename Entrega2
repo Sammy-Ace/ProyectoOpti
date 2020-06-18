@@ -1,0 +1,164 @@
+\documentclass[journal, 10pt]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[thinlines]{easytable}
+\usepackage{url}
+\def\IEEEkeywordsname{Palabras Claves}
+\makeatletter
+\long\def\@makecaption#1#2{\ifx\@captype\@IEEEtablestring%
+\footnotesize\begin{center}{\normalfont\footnotesize #1}\\
+{\normalfont\footnotesize\scshape #2}\end{center}%
+\@IEEEtablecaptionsepspace
+\else
+\@IEEEfigurecaptionsepspace
+\setbox\@tempboxa\hbox{\normalfont\footnotesize {#1.}~~ #2}%
+\ifdim \wd\@tempboxa >\hsize%
+\setbox\@tempboxa\hbox{\normalfont\footnotesize {#1.}~~ }%
+\parbox[t]{\hsize}{\normalfont\footnotesize \noindent\unhbox\@tempboxa#2}%
+\else
+\hbox to\hsize{\normalfont\footnotesize\hfil\box\@tempboxa\hfil}\fi\fi}
+\makeatother
+\newtheorem{example}{Ejemplo}
+\begin{document}
+\title{\textit{Knight's Tour Problem: Problema del Caballo}}
+\author{Ignacio Figueroa Ram\'irez \\Sebasti\'an Herrera Corrales\\ Felipe Samur Sansur\\ Universidad T\'ecnica Federico Santa Mar\'ia \\ Avenida Vicu\~na Mackenna 3939,San Joaqu\'in, Santiago, Chile \\
+\{ignacio.figueroara, sebastian.herrerac, jorge.samur\}@sansano.usm.cl}
+\maketitle
+
+\begin{abstract}
+\textbf{El protagonista de este art\'iculo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que ha día de hoy sigue siendo de interés, a la interminable cantidad de soluciones distintas que se le han encontrado y a las aplicaciones que se le asocian. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundiad en qué consiste el problema y como puede ser abordado y solucionado de distintas maneras gracias al aporte de distintos emblemáticos personajes de la matemática. }
+\end{abstract}
+
+\begin{IEEEkeywords}
+Knight's Tour Problem, Problema del Cablallo, Leonhard Euler, Camino Hamiltoniano, Regla de Warnsdorff, Divide y Venceras.
+\end{IEEEkeywords}
+
+
+\section{Introducción}
+El \textit{Knight's Tour Problem} (KTP), o Problema del Caballo, tiene como objetivo encontrar una ruta o camino en un tablero de ajedr\'ez tal que el caballo visite todas las celdas del tablero una sola vez.
+El primer \textit{problema del caballo} data del siglo séptimo en un manuscrito \'arabe titulado \textit{La delicia de los inteligentes, una descripci\'on del ajedrez} y contiene dos soluciones en \cite{Murray:1913}. Sin embargo, no fue hasta 1766 que el problema fue analizado por primera vez en un articulo matem\'atico \cite{Euler:1759} por el conocido Leonhard Euler, que sentó bases para ensayos futuros. El concepto de este problema puede ser aplicado en procesamiento de imagenes, dado que el tablero de ajedrez puede emular una matriz de pixeles, desarrollo observable en \cite{Xiaoyong:2017}.\\
+En las siguientes secciones se profundizara m\'as acerca de este problema. En la secci\'on $II$ se estudiarán los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a mas detalladamente con un ejemplo. La secci\'on $III$ se enfocará en dar contexto acerca de las soluciones del problema y de problemas previos a este. Finalmente se presentar\'an conclusiones y expectativas para el desarrollo de este problema a futuro.
+
+\section{El Problema}
+El caballo tiene un movimiento inusual entre las piezas de ajedrez, se puede desplazar dos casillas horizontalmente y una casilla verticalmente o dos casillas en posición vertical y una horizontal. Con lo cual, el movimiento completo se parece a letra "$\mathcal{L}$"  \cite{Uehara:2019}. La Figura \ref{fig:moves} muestra a detalle cuales son las 8 casillas a las que puede acceder un caballo..
+
+\begin{figure}[h]
+
+\centering
+\includegraphics[width=0.2\textwidth]{figures/k_moves.png}
+\caption{Movimientos del caballo en un tablero de ajedrez.}
+\label{fig:moves}
+
+\end{figure}
+
+El problema del caballo consiste en encontrar una ruta para el caballo en un tablero de ajedrez de tamaño $8 \times 8$, de modo que este visite cada casilla una sola vez. La soluci\'on de este problema se representa como una matriz numerada que indica el orden que sigui\'o el caballo para completar el camino \cite{Kopec:2016}.
+
+\begin{example}
+  Una de las soluciones que encontro Euler y que publico en \cite{Euler:1759} es especialmente interesante ya que trabaja con las simetr\'ias del tablero. Euler primero realiza un recorrido  por la mitad inferior del tablero, comenzando en el cuadrado $1$ y terminando en el cuadrado $32$. Luego repite exactamente este mismo recorrido, de manera sim\'etrica, para la parte superior mitad del tablero, comenzando en el cuadrado $33$ y terminando en el cuadrado $64$. El ejemplo se ve a detalle en la \textit{Figura \ref{fig:euler}} 
+\end{example}
+
+\begin{figure}[h]
+
+\centering
+\includegraphics[width=0.2\textwidth]{figures/EulerKT.png}
+\caption{Soluci\'on propuesta en \cite{Euler:1759}.}
+\label{fig:euler}
+
+\end{figure}
+Hay soluciones que tienen todo tipo de enfoques; pueden ser para tableros de una dimensión fija, otras soluciones pueden servir para cualquier dimensión otorgada al tablero, otros solo para casos pequeños, otros dentro de un rango de dimensiones, etc. A continuación se muestran algunos algoritmos que se han diseñados para resolver el problema a lo largo de la existencia del enigma matemático.
+
+La primera solución al problema son las demostraciones desarrolladas por Parberry \cite{Parberry:1997}, quien propone un acercamiento de tipo “dividir y conquistar”. Parberry propone separar el tablero en subsecciones de tamaño similar y completar el tour en cada una de estas subsecciones antes de pasar a la siguiente. La propuesta considera distintas demostraciones para distintos tipos de tablero, sin embargo todas se basan en el mismo principio. Este método posee varias ventajas, como su simpleza, ya que las técnicas son fáciles de entender y demostrar \cite{Parberry:1997}, y también su eficiencia, pues poseen complejidad $\mathcal{O}(n^2)$, lo que implica un tiempo proporcional a la superficie del tablero y por lo tanto dependiente del área que debe cubrir (para un tablero no cuadrado la complejidad sería $\mathcal{O}(n\times m) $ con \textit{n,m} las dimensiones del tablero). Por el contrario, la mayor desventaja del método es que no existe una regla general, es decir a pesar que todos los teoremas comparten la misma base, la elección va a depender de la configuración $m\times n$ del tablero.
+
+Otra técnica es usar el Algoritmo de Warnsdorff (para el problema del caballo), el cual funciona para tableros con dimensión mínima de $5\times 5$ y consiste en visitar las casillas menos asequibles lo más pronto posible con la finalidad de evitar posibles caminos sin salida y/o arrinconados en un futuro. La Heurística de Warnsdorff \cite{Squirrel:1996}, dice:
+\begin{quote}
+  Habiendo iniciado el camino de una casilla arbitraria: sea la $(n+1)$-ésima casilla del camino (siendo n la cantidad actual de casillas recorridas), entonces esta casilla:
+  \begin{enumerate}
+    \item Está al alcance de la n-ésima casilla
+    \item Aún no ha sido visitada previamente.
+    \item Es la casilla desde la cual menos movimientos es posible hacer de todas las casillas alcanzables no visitadas de la n-ésima casilla.
+\end{enumerate}
+\end{quote}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.2\textwidth]{figures/warnsdorff.png}
+\caption{Soluci\'on hecha siguiendo la Heurística de Warnsdorff}
+\label{fig:warnsdorff}
+\end{figure}
+Sin embargo, pueden se pueden presentar situaciones en que 2 casillas cumplan con las mismas condiciones. Aquí es donde nace la imperfección del algoritmo, pues si bien existen criterios de desempate que han sido creados después de numerosos estudios del algoritmo y tienden a permitir elegir el camino correcto, no son metodologías del todo exactas y pueden aún así originarse dilemas difíciles de resolver a la hora de elegir un camino, y si se toma una mala decisión el camino podría no terminarse. Además, la Heurística de Warnsdoff no es confiable por si sola para tableros de dimensiones muy grandes (p.e. $n \geq 200)$, pues estos enfrentamientos de desempate se hacen más recurrentes. Aún así, la Heurística de Warnsdorff es bastante efectiva para los rangos sugeridos y una buena opción gracias a su patrón intuitivo y simpleza.   
+
+Siguiendo con algunas instancias del problema que son interesantes de resolver, dadas las características específicas del problema los casos de estudio siempre se relacionan con la forma del tablero $m \times n$. De éstas, quizás la más popular es la del tablero de ajedrez $8 \times 8$, la cual fue resuelta por Euler \cite{Euler:1759} hace siglos atrás. Parberry \cite{Parberry:1997} describe otros casos más específicos, tales como el tablero $n \times n$, $n \ge 5 \wedge n=\text{impar}$, en el cual existen tours cerrados que pasan por todos los espacios a excepción de una de las esquinas; tours para tableros de tipo $n \times (n+1), n \ge 6$ y algunas propiedades interesantes relacionadas con la simetría de tours para tableros $n \times n, n \ge 10, n$ divisible por $2$ pero no por $4$. Destacar que para cualquier caso, el tablero $n \times n$ mínimo para trabajar es el de $5\times 5$, ya que de considerar $n$ inferior a $5$ existirían espacios inalcanzables.
+
+En cuanto a aportes del problema, no se han encontrado otros problemas que se vean beneficiados de su aplicación, existen casos particulares como una famosa partida de un torneo de ajedrez en la que uno de los participantes realizó 13 movimientos consecutivos que parecían seguir un Knight's Tour\cite{Shabazz:2010}.
+
+Por útlimo, un problema que benefició el entendimiento del problema del caballo es el de encontrar un camino hamiltoniano. Un camino de hamiltoniano es un camino que visita cada nodo de un grafo exactamente una vez, y de hecho un camino del caballo (para el problema) corresponde a un camino hamiltoniano en un grafo cuyos nodos representan las casillas  del tablero, y dos nodos est\'an conectados si un caballo puede moverse entre las casillas seg\'un las reglas del ajedrez \cite{Rosen/2002}. Los variados algoritmos que sirven para resolver el problema de encontrar un camino hamiltoniano en un grafo simplifican el desarrollo del problema del caballo. Sin embargo, se presentaron dos enfoques más apropiados para el caso.
+
+
+\section{Formalización del Problema}
+Se considerará el tablero general de tipo $N \times N$ y cada celda del tablero se representara con los enteros $0,\ ... \ , N^2-1$. Lo anterior se puede ver mas claramente en la Figura \ref{fig:euler}. 
+\begin{example}
+  El Cuadro \ref{c1} muestra a mas detalle el tipo de representación que se va a tener inicialmente de un tablero. Suponiendo $N=5$, el tablero se veria como lo muestra el Cuadro \ref{c2} y una solución para aquella instancia se veria representada como lo muestra el Cuadro \ref{c3}.
+\end{example}
+
+\begin{table}[!htb]
+    \caption{Instancia $N=5$}
+    \begin{minipage}{.5\linewidth}
+      \caption{Tablero}
+      \centering
+        \begin{TAB}(e,0.5cm,0.5cm){|c|c|c|c|c|}{|c|c|c|c|c|}
+          0 & 1 & 2 & 3 & 4 \\
+          5 & 6 & 7 & 8 & 9 \\
+          10& 11& 12& 13& 14 \\
+          15& 16& 17& 18& 19 \\
+          20& 21& 22& 23& 24   
+          \label{c2}  
+        \end{TAB}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+      \centering
+        \caption{Solución}
+          \begin{TAB}(e,0.5cm,0.5cm){|c|c|c|c|c|}{|c|c|c|c|c|}
+            0 & 13 & 8 & 19 & 2 \\
+            23 & 18 & 1 & 14 & 9 \\
+            12& 7& 24& 3& 20 \\
+            17& 22& 5& 10& 15 \\
+            6& 11& 16& 21& 4 
+            \label{c3}    
+          \end{TAB}
+    \end{minipage} 
+    \label{c1}
+\end{table}
+
+
+
+
+% Formalización y representación matemática del problema, sus elementos específicos, así como de elementos variables que existen (i.e., los que definen variantes del problema). No defina valores numéricos y sea suficientemente explicativo, en lenguaje matemático, con los dominios o características principales de cada elemento. \textbf{En esta sección no se debe colocar modelo matemático formal alguno, solo debe formalizar los elementos del modelo}. Esto se logra usando redacción en prosa para explicar cada elemento. El objetivo es explicar la representación matemática del problema que servirá como base para modelar el problema. (20 pts.)\\ 
+
+\section{Modelo de Programación Lineal General}
+
+Definición de modelo de programación lineal genérico (puede ser real, entero puro, entero mixto o entero binario), que se \textbf{adapte a cualquier instancia o caso del problema}. No utilice valores numéricos en él. Defina claramente variables de decisión, parámetros, función de evaluación y restricciones. Si el problema no posee un modelo lineal, ocupe alguno no lineal justificando claramente el por que se desecha la opción de una representación lineal del problema.\\ 
+
+Opcionalmente, si considera que el modelo es excesivamente complejo, puede dar un ejemplo de su utilización para una instancia sencilla del problema y así sopesar la dificultad de lectura y entendimiento. Cuidado, un modelo matemático formal consume mucho espacio. Piense en el límite de planas de esta entrega. (30 pts.)
+
+\section{Conclusiones \& Perspectivas}
+
+Desarrollo de los aportes de la entrega, resultados y de los futuros pasos a seguir tanto como para las próximas entregas como para desarrollos fuera del curso. El orden es siempre, aportes y en párrafo aparte los trabajos futuros y/o perspectivas. Desarrolle en prosa respondiendo lo siguiente: ¿Cuál es el aporte del problema? \textbf{¿Qué ha verificado con respecto al problema?} ¿Qué es relevante del problema y como se puede seguir mejorando su resolución? ¿Qué se hará a futuro? ¿Qué se podría hacer a futuro?\\
+
+\noindent \textbf{Debe mantener el desarrollo en la Entrega 1, incluyendo las correcciones hechas por el Profesor y los nuevos contenidos cubiertos en esta versión. (10 pts.)}
+
+\newpage
+
+\section{Referencias}
+
+De donde obtuvo la informaci\'on. Evite referenciar páginas web. Si es estrictamente necesario, asegúrese que la fuente sea de un ente oficial en la temática (e.g., CSPLib.org para problemas de Satisfacción de Restricciones). Colocar el link directo a la informaci\'on (google, wikipedia, etc.) \textbf{NO son referencias v\'alidas, y será severamente penalizado}. Se recomienda \textbf{fehacientemente} el uso de BibTeX, ya que la mayoría de los artículos científicos, libros, reportes técnicos, etc. tienen entradas exportables desde las distintas editoriales que los publican (IEEE, Springer, Elsevier, AAAS, etc.). Lo mismo sucede, con los indexadores de contenido científico (WOS, SCOPUS, etc.). Ejemplo \cite{Winston:1994}, \cite{HillierLiebermann:1991}.\\
+
+\noindent\textbf{Debe mantener el desarrollo en la Entrega 1, incluyendo las correcciones hechas por el Profesor. (5 pts.)} 
+
+\textit{En esta secci\'on solo van las referencia, no se incluye ningún tipo de texto adicional. Guíese por el siguiente ejemplo:}
+
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+\end{document}
