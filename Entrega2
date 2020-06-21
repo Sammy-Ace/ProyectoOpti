@@ -159,11 +159,11 @@ Es decir, cada variable representa una casilla del tablero.\\
 En cuanto a las restricciones, se debe indicar qué requisitos debe cumplir una solución válida del problema. Considerando el hecho de que se está considerando un Knight's Tour no necesariamente cerrado, se han establecido 3 restricciones primordiales:\\
 \\\bullet alldifferent($X_1,X_2,...,X_n$)\\
 \\Esta es una de las reglas más básicas que se debe cumplir en un Knight's Tour: un caballo no puede pisar 2 veces una misma casilla. Por tanto, se necesita indicar que todo $X_i$ esté asociado a una casilla diferente, así asegurando que las $n^2$ casillas hayan sido recorridas en algún momento por el caballo.\\
-\\\bullet $Mov=\{(2,1),(-2,1),(2,-1),(-2,-1),(1,2),(-1,2),(1,-2),(-1,-2)\}$\\
-\\\bullet $X_i + M = X_{i+1}$\\
-\\Finalmente, está la restricción que hace a un Knight's Tour, un Knight's Tour, el definir como debe ser cada movimiento. Esta restricción establece que para que una solución sea válida, cada (i+1)-ésima casilla visitada debe haber sido visitada después de una i-ésima casilla que esté al alcance de un movimiento de un caballo. De esta manera, se asegura que todas las casillas fueron recorridas con siguiendo el movimiento de la pieza de caballo.  \\
+\\\bullet $M=\{(2,1),(-2,1),(2,-1),(-2,-1),(1,2),(-1,2),(1,-2),(-1,-2)\}\\$
 
-
+\\Corresponde a la definición del conjunto de movimientos posibles del caballo. Es decir, esta restricción asegura que cada vector movimiento perteneciente a M corresponda al movimiento de un caballo.\\
+\\\bullet $X_i + (d_x,d_y) = X_{i+1}, (d_x,d_y) \in  M $\\
+\\Finalmente, está la restricción que hace a un Knight's Tour, un Knight's Tour, el definir como debe ser cada movimiento. Esta restricción establece que para que una solución sea válida, cada (i+1)-ésima casilla visitada debe haber sido visitada después de una i-ésima casilla que esté al alcance de un movimiento de un caballo, el cual está representado por el vector movimiento $(d_x,d_y)$ . De esta manera, se asegura que todas las casillas fueron recorridas siguiendo el movimiento de la pieza de caballo.\\
 \section{Conclusiones \& Perspectivas}
 
 El Knight’s Tour es un problema que ha sido ampliamente estudiado, ya que al ser un caso particular de un problema de Hamilton su desarrollo resulta de gran interés para aportar al entendimiento general de esta categoría de problemas. Lo relevante del problema es cómo el mismo procedimiento (el movimiento del caballo) se puede aplicar a distintas configuraciones según el problema específico (las características del tablero), siendo necesario para mejorar su resolución la búsqueda de un método general y eficiente que se pueda aplicar a cualquier configuración.
