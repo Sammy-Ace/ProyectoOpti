@@ -157,7 +157,7 @@ Los valores que pueden tomar las distintas variables corresponden a pares ordena
 Es decir, cada variable representa una casilla del tablero.\\
 \\\textbf{Restricciones}:
 En cuanto a las restricciones, se debe indicar qué requisitos debe cumplir una solución válida del problema. Considerando el hecho de que se está considerando un Knight's Tour no necesariamente cerrado, se han establecido 3 restricciones primordiales:\\
-\\\bullet alldifferent($X_i$)\\
+\\\bullet alldifferent($X_1,X_2,...,X_n$)\\
 \\Esta es una de las reglas más básicas que se debe cumplir en un Knight's Tour: un caballo no puede pisar 2 veces una misma casilla. Por tanto, se necesita indicar que todo $X_i$ esté asociado a una casilla diferente, así asegurando que las $n^2$ casillas hayan sido recorridas en algún momento por el caballo.\\
 \\\bullet $Mov=\{(2,1),(-2,1),(2,-1),(-2,-1),(1,2),(-1,2),(1,-2),(-1,-2)\}$\\
 \\\bullet $X_i + M = X_{i+1}$\\
