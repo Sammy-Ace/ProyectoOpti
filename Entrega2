@@ -98,7 +98,7 @@ Por útlimo, un problema que benefició el entendimiento del problema del caball
 
 \section{Formalización del Problema}
 Antes de formalizar la representación del problema, es importante mencionar como se enfocará la resolución del mismo. Para resolver el Knight's Tour Problem se determino que la forma en que se resolverá sera usando Programación con Restricciones. Volviendo al problema inicial, lo que se tiene es una serie de restricciones que satisfacer a fin de encontrar el camino hamiltoniano en el tablero.
-Para representar el tablero de ajedrez se enumeraran las celdas como coordenadas en un plano, solo que para hacer mas simple la comprensi\'on del cocepto del filas y columnas se decidió omitir la columna y la fila $0$. Entonces, cada celda del tablero sera definida como un par ordenado que ira desde $(1,1)$ a $(N-1, N-1)$ donde $N$ representa el número de celdas en el tablero.
+Para representar el tablero de ajedrez se enumeraran las celdas como coordenadas en un plano, solo que para hacer mas simple la comprensi\'on del cocepto del filas y columnas se decidió omitir la columna y la fila $0$. Entonces, cada celda del tablero sera definida como un par ordenado que ira desde $(1,1)$ a $(N, N)$ donde $N^{2}$ representa el número de celdas en el tablero.
 
 \begin{example}
 Un tablero como el que se espera representar se puede ver en la Cuadro \ref{c2}, que muestra el tablero de coordenadas para $N=5$.
@@ -141,11 +141,28 @@ Los movimientos en $L$ que hace un caballo en un tablero se pueden ver en el Cua
 
 
 
-\section{Modelo de Programación Lineal General}
+\section{Modelo de satisfacción de restricciones}
+\\Para modelar un problema de satisfacción de restricciones, se necesita definir el conjunto de variables, el dominio de las mismas, y las restricciones a las que se encontrará restringida cada solución.\\
+\\\textbf{Variables}:
+Considerando n como el largo/ancho del tablero, tal como se planteó en la sección anterior, entonces la variables definidas para un tablero de tamaño n$x$n son:\\
+\begin{center}
+    $X = \{X_1, X_2, ..., X_{n^2}\}$,\\
+    donde $X_i$ corresponde a la i-ésima casilla recorrida por el caballo.
+\end{center}
+\\\textbf{Dominio}:
+Los valores que pueden tomar las distintas variables corresponden a pares ordenados que indican la posición en que está posicionada la i-ésima variable:\\
+\begin{center}
+    $D_{X_i} = (u,v), \forall u,v \in  \{1, 2, ..., n\}$,\\
+\end{center}\\
+Es decir, cada variable representa una casilla del tablero.\\
+\\\textbf{Restricciones}:
+En cuanto a las restricciones, se debe indicar qué requisitos debe cumplir una solución válida del problema. Considerando el hecho de que se está considerando un Knight's Tour no necesariamente cerrado, se han establecido 3 restricciones primordiales:\\
+\\\bullet alldifferent($X_i$)\\
+\\Esta es una de las reglas más básicas que se debe cumplir en un Knight's Tour: un caballo no puede pisar 2 veces una misma casilla. Por tanto, se necesita indicar que todo $X_i$ esté asociado a una casilla diferente, así asegurando que las $n^2$ casillas hayan sido recorridas en algún momento por el caballo.\\
+\\\bullet $Mov=\{(2,1),(-2,1),(2,-1),(-2,-1),(1,2),(-1,2),(1,-2),(-1,-2)\}$\\
+\\\bullet $X_i + M = X_{i+1}$\\
+\\Finalmente, está la restricción que hace a un Knight's Tour, un Knight's Tour, el definir como debe ser cada movimiento. Esta restricción establece que para que una solución sea válida, cada (i+1)-ésima casilla visitada debe haber sido visitada después de una i-ésima casilla que esté al alcance de un movimiento de un caballo. De esta manera, se asegura que todas las casillas fueron recorridas con siguiendo el movimiento de la pieza de caballo.  \\
 
-Definición de modelo de programación lineal genérico (puede ser real, entero puro, entero mixto o entero binario), que se \textbf{adapte a cualquier instancia o caso del problema}. No utilice valores numéricos en él. Defina claramente variables de decisión, parámetros, función de evaluación y restricciones. Si el problema no posee un modelo lineal, ocupe alguno no lineal justificando claramente el por que se desecha la opción de una representación lineal del problema.\\ 
-
-Opcionalmente, si considera que el modelo es excesivamente complejo, puede dar un ejemplo de su utilización para una instancia sencilla del problema y así sopesar la dificultad de lectura y entendimiento. Cuidado, un modelo matemático formal consume mucho espacio. Piense en el límite de planas de esta entrega. (30 pts.)
 
 \section{Conclusiones \& Perspectivas}
 
