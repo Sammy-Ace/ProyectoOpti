@@ -29,18 +29,18 @@
 \maketitle
 
 \begin{abstract}
-\textbf{El protagonista de este art\'iculo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que ha día de hoy sigue siendo de interés, debido a la interminable cantidad de soluciones distintas que se le han encontrado y a las aplicaciones que se le asocian. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundiad en qué consiste el problema y como puede ser abordado y solucionado de distintas maneras gracias al aporte de distintos emblemáticos personajes de la matemática, finalizando con la presentación de un modelo CSP para la resolución del problema.  }
+\textbf{El protagonista de este art\'iculo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que a día de hoy sigue siendo de interés, debido a la interminable cantidad de soluciones distintas que se le han encontrado y a las aplicaciones que se le asocian. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundidad en qué consiste el problema y cómo puede ser abordado y solucionado de distintas maneras gracias al aporte de varios emblemáticos personajes de la matemática, finalizando con la presentación de un modelo CSP (problema de satisfacción de restricciones) para la resolución del problema.  }
 \end{abstract}
 
 \begin{IEEEkeywords}
-Knight's Tour Problem, Problema del Cablallo, Leonhard Euler, Camino Hamiltoniano, Regla de Warnsdorff, Divide y Venceras.
+Knight's Tour Problem, Problema del Caballo, Leonhard Euler, Camino Hamiltoniano, Regla de Warnsdorff, Divide y Vencerás.
 \end{IEEEkeywords}
 
 
 \section{Introducción}
 El \textit{Knight's Tour Problem} (KTP), o Problema del Caballo, tiene como objetivo encontrar una ruta o camino en un tablero de ajedr\'ez tal que el caballo visite todas las celdas del tablero una sola vez.
-El primer \textit{problema del caballo} data del siglo séptimo en un manuscrito \'arabe titulado \textit{La delicia de los inteligentes, una descripci\'on del ajedrez} y contiene dos soluciones en \cite{Murray:1913}. Sin embargo, no fue hasta 1766 que el problema fue analizado por primera vez en un articulo matem\'atico \cite{Euler:1759} por el conocido Leonhard Euler, que sentó bases para ensayos futuros. El concepto de este problema puede ser aplicado en procesamiento de imagenes, dado que el tablero de ajedrez puede emular una matriz de pixeles, desarrollo observable en \cite{Xiaoyong:2017}.\\
-En la secci\'on $II$ se estudiarán los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a mas detalladamente con un ejemplo, dando luego el contexto acerca de las soluciones del problema y de problemas previos a este. En la sección $III$ se formalizan matemáticamente los elementos del problema, para luego en la sección $IV$ definir el modelo CSP del problema. Finalmente se presentar\'an conclusiones y expectativas para el desarrollo de este problema a futuro.
+El primer \textit{problema del caballo} data del siglo séptimo en un manuscrito \'arabe titulado \textit{La delicia de los inteligentes, una descripci\'on del ajedrez} y contiene dos soluciones en \cite{Murray:1913}. Sin embargo, no fue hasta 1766 que el problema fue analizado por primera vez en un articulo matem\'atico \cite{Euler:1759} por el conocido Leonhard Euler, que sentó bases para ensayos futuros. El concepto de este problema puede ser aplicado en procesamiento de imágenes, dado que el tablero de ajedrez puede emular una matriz de píxeles, desarrollo observable en \cite{Xiaoyong:2017}.\\
+En la secci\'on $II$ se estudiarán los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a más detalladamente con un ejemplo, dando luego el contexto acerca de las soluciones del problema y de problemas anteriores a éste. En la sección $III$ se formalizan matemáticamente los elementos del problema, para luego en la sección $IV$ definir el modelo CSP del problema. Finalmente se presentar\'an conclusiones y expectativas para el desarrollo de este problema a futuro.
 
 \section{El Problema}
 El caballo tiene un movimiento inusual entre las piezas de ajedrez, se puede desplazar dos casillas horizontalmente y una casilla verticalmente o dos casillas en posición vertical y una horizontal. Con lo cual, el movimiento completo se parece a letra "$\mathcal{L}$" \cite{Uehara:2019}. La Figura \ref{fig:moves} muestra a detalle cuales son las 8 casillas a las que puede acceder un caballo.
@@ -57,7 +57,7 @@ El caballo tiene un movimiento inusual entre las piezas de ajedrez, se puede des
 El problema del caballo consiste en encontrar una ruta para el caballo en un tablero de ajedrez de tamaño $8 \times 8$, de modo que este visite cada casilla una sola vez. La soluci\'on de este problema se representa como una matriz numerada que indica el orden que sigui\'o el caballo para completar el camino \cite{Kopec:2016}.
 
 \begin{example}
-  Una de las soluciones que encontro Euler y que publico en \cite{Euler:1759} es especialmente interesante ya que trabaja con las simetr\'ias del tablero. Euler primero realiza un recorrido  por la mitad inferior del tablero, comenzando en el cuadrado $1$ y terminando en el cuadrado $32$. Luego repite exactamente este mismo recorrido, de manera sim\'etrica, para la parte superior mitad del tablero, comenzando en el cuadrado $33$ y terminando en el cuadrado $64$. El ejemplo se ve a detalle en la \textit{Figura \ref{fig:euler}} 
+  Una de las soluciones que encontró Euler y que publicó en \cite{Euler:1759} es especialmente interesante ya que trabaja con las simetr\'ias del tablero. Euler primero realiza un recorrido  por la mitad inferior del tablero, comenzando en el cuadrado $1$ y terminando en el cuadrado $32$. Luego repite exactamente este mismo recorrido, de manera sim\'etrica, para la parte superior mitad del tablero, comenzando en el cuadrado $33$ y terminando en el cuadrado $64$. El ejemplo se ve a detalle en la \textit{Figura \ref{fig:euler}} 
 \end{example}
 
 \begin{figure}[h]
@@ -94,7 +94,7 @@ Algunas instancias del problema que son interesantes de resolver se relacionan c
 
 En cuanto a aportes del problema, existen curiosos casos pequeños como el de una famosa partida de un torneo de ajedrez en la que uno de los participantes realizó 13 movimientos consecutivos que parecían seguir un Knight's Tour \cite{Shabazz:2010}. Por otro lado, hay areas en las que se han encontrado aplicaciones bastante útiles del Knight's Tour, un ejemplo podría ser su aplicación en el diseño de metodologías para el encriptado de imágenes \cite{Singh:2015}.   
 
-Por útlimo, un problema que benefició el entendimiento del problema del caballo es el de encontrar un camino hamiltoniano. Un camino de hamiltoniano es un camino que visita cada nodo de un grafo exactamente una vez, y de hecho un camino del caballo (para el problema) corresponde a un camino hamiltoniano en un grafo cuyos nodos representan las casillas  del tablero, y dos nodos est\'an conectados si un caballo puede moverse entre las casillas seg\'un las reglas del ajedrez \cite{Rosen/2002}. Los variados algoritmos que sirven para resolver el problema de encontrar un camino hamiltoniano en un grafo simplifican el desarrollo del problema del caballo. Sin embargo, se presentaron dos enfoques más apropiados para el caso.
+Por ultimo, un problema que benefició el entendimiento del problema del caballo es el de encontrar un camino hamiltoniano. Un camino de hamiltoniano es un camino que visita cada nodo de un grafo exactamente una vez, y de hecho un camino del caballo (para el problema) corresponde a un camino hamiltoniano en un grafo cuyos nodos representan las casillas  del tablero, y dos nodos est\'an conectados si un caballo puede moverse entre las casillas seg\'un las reglas del ajedrez \cite{Rosen/2002}. Los variados algoritmos que sirven para resolver el problema de encontrar un camino hamiltoniano en un grafo simplifican el desarrollo del problema del caballo. Sin embargo, se presentaron dos enfoques más apropiados para el caso.
 
 \section{Formalización del Problema}
 Antes de formalizar la representación del problema, es importante mencionar cómo se enfocará la resolución del mismo. Para resolver el Knight's Tour Problem se determinó que la forma en que se resolverá sera usando Programación con Restricciones, razones que se explicarán en la siguiente sección. Volviendo al problema inicial, lo que se tiene es una serie de restricciones que satisfacer a fin de encontrar el camino hamiltoniano en el tablero. Para representar el tablero de ajedrez se enumerarán las celdas como coordenadas en un plano, solo que para hacer más simple la comprensión del concepto de filas y columnas se decidió omitir la columna y fila $0$. Entonces, cada celda del tablero será definida como un par ordenado que irá desde $(1,1)$ hasta $(N, N)$, donde $N^{2}$ representa el número de celdas en el tablero.
@@ -164,7 +164,7 @@ Como se señaló en la sección anterior, se desechó la opción de utilizar un 
 \end{itemize}
 \medskip
 \noindent Esta es una de las reglas básicas que se debe cumplir en un Knight's Tour: un caballo no puede pisar 2 veces una misma casilla, a menos que sea un tour cerrado y en ese caso las casillas que coninciden deben ser la primera y la última. Por tanto, se necesita indicar que todo $X_i$ esté asociado a una casilla diferente, así asegurando que las $n^2$ casillas hayan sido recorridas en algún momento por el caballo.
-\bigskip
+\medskip
 \begin{itemize}
     \item $M=\{(2,1),(-2,1),(2,-1),(-2,-1),\\
      (1,2),(-1,2),(1,-2),(-1,-2)\}$
