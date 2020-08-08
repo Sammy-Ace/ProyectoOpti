@@ -1,0 +1,174 @@
+\documentclass[journal, 10pt]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[thinlines]{easytable}
+\usepackage{url}
+\def\IEEEkeywordsname{Palabras Claves}
+\makeatletter
+\long\def\@makecaption#1#2{\ifx\@captype\@IEEEtablestring%
+\footnotesize\begin{center}{\normalfont\footnotesize #1}\\
+{\normalfont\footnotesize\scshape #2}\end{center}%
+\@IEEEtablecaptionsepspace
+\else
+\@IEEEfigurecaptionsepspace
+\setbox\@tempboxa\hbox{\normalfont\footnotesize {#1.}~~ #2}%
+\ifdim \wd\@tempboxa >\hsize%
+\setbox\@tempboxa\hbox{\normalfont\footnotesize {#1.}~~ }%
+\parbox[t]{\hsize}{\normalfont\footnotesize \noindent\unhbox\@tempboxa#2}%
+\else
+\hbox to\hsize{\normalfont\footnotesize\hfil\box\@tempboxa\hfil}\fi\fi}
+\makeatother
+\newtheorem{example}{Ejemplo}
+\begin{document}
+\title{\textit{Knight's Tour Problem.}}
+\author{Ignacio Figueroa Ram\'irez \\Sebasti\'an Herrera Corrales\\ Felipe Samur Sansur\\ Universidad T\'ecnica Federico Santa Mar\'ia \\ Avenida Vicu\~na Mackenna 3939,San Joaqu\'in, Santiago, Chile \\
+\{ignacio.figueroara, sebastian.herrerac, jorge.samur\}@sansano.usm.cl}
+\maketitle
+
+\begin{abstract}
+\textbf{El protagonista de este art\'iculo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que a día de hoy sigue siendo de interés, debido a la interminable cantidad de soluciones distintas que se le han encontrado y a las aplicaciones que se le asocian. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundidad en qué consiste el problema y cómo puede ser abordado y solucionado de distintas maneras gracias al aporte de varios emblemáticos personajes de la matemática, finalizando con la presentación de un modelo CSP (problema de satisfacción de restricciones) para la resolución del problema.  }
+\end{abstract}
+
+\begin{IEEEkeywords}
+Knight's Tour Problem, Problema del Caballo, Leonhard Euler, Camino Hamiltoniano, Regla de Warnsdorff, Divide y Vencerás.
+\end{IEEEkeywords}
+
+
+\section{Introducción}
+El \textit{Knight's Tour Problem} (KTP), o Problema del Caballo, tiene como objetivo encontrar una ruta o camino en un tablero de ajedr\'ez tal que el caballo visite todas las celdas del tablero una sola vez.
+El primer \textit{problema del caballo} data del siglo séptimo en un manuscrito \'arabe titulado \textit{La delicia de los inteligentes, una descripci\'on del ajedrez} y contiene dos soluciones en \cite{Murray:1913}. Sin embargo, no fue hasta 1766 que el problema fue analizado por primera vez en un articulo matem\'atico \cite{Euler:1759} por el conocido Leonhard Euler, que sentó bases para ensayos futuros. El concepto de este problema puede ser aplicado en procesamiento de imágenes, dado que el tablero de ajedrez puede emular una matriz de píxeles, desarrollo observable en \cite{Xiaoyong:2017}.\\
+En la secci\'on $II$ se estudiarán los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a más detalladamente con un ejemplo, dando luego el contexto acerca de las soluciones del problema y de problemas anteriores a éste. En la sección $III$ se formalizan matemáticamente los elementos del problema, para luego en la sección $IV$ definir el modelo CSP del problema. Finalmente se presentar\'an conclusiones y expectativas para el desarrollo de este problema a futuro.
+
+\section{El Problema}
+El caballo tiene un movimiento inusual entre las piezas de ajedrez, se puede desplazar dos casillas horizontalmente y una casilla verticalmente o dos casillas en posición vertical y una horizontal. Con lo cual, el movimiento completo se parece a letra "$L$" \cite{Uehara:2019}. La Figura \ref{fig:moves} muestra a detalle cuales son las 8 casillas a las que puede acceder un caballo.
+
+\begin{figure}[ht]
+
+\centering
+\includegraphics[width=0.2\textwidth]{figures/k_moves.png}
+\caption{Movimientos del caballo en un tablero de ajedrez.}
+\label{fig:moves}
+
+\end{figure}
+
+El problema del caballo consiste en encontrar una ruta para el caballo en un tablero de ajedrez de un tamaño $n \times n$, de modo que este visite cada casilla una sola vez. La soluci\'on de este problema se representa como una matriz numerada que indica el orden que sigui\'o el caballo para completar el camino \cite{Kopec:2016}.
+
+\begin{example}
+  Una de las soluciones que encontró Euler y que publicó en \cite{Euler:1759} es especialmente interesante ya que trabaja con las simetr\'ias del tablero. Euler primero realiza un recorrido  por la mitad inferior del tablero, comenzando en el cuadrado $1$ y terminando en el cuadrado $32$. Luego repite exactamente este mismo recorrido, de manera sim\'etrica, para la parte superior mitad del tablero, comenzando en el cuadrado $33$ y terminando en el cuadrado $64$. El ejemplo se ve a detalle en la \textit{Figura \ref{fig:euler}} 
+\end{example}
+
+\begin{figure}[h]
+
+\centering
+\includegraphics[width=0.2\textwidth]{figures/EulerKT.png}
+\caption{Soluci\'on propuesta en \cite{Euler:1759}.}
+\label{fig:euler}
+
+\end{figure}
+Hay soluciones que tienen todo tipo de enfoques; pueden ser para tableros de una dimensión fija, otras soluciones pueden servir para cualquier dimensión otorgada al tablero, otros solo para casos pequeños, otros dentro de un rango de dimensiones, etc. A continuación se muestran algunos algoritmos que se han diseñados para resolver el problema a lo largo de la existencia del enigma matemático.
+
+La primera solución al problema son las demostraciones desarrolladas por Parberry \cite{Parberry:1997}, quien propone un acercamiento de tipo “dividir y conquistar”. Parberry propone separar el tablero en subsecciones de tamaño similar y completar el tour en cada una de estas subsecciones antes de pasar a la siguiente. La propuesta considera distintas demostraciones para distintos tipos de tablero, sin embargo todas se basan en el mismo principio. Este método posee varias ventajas, como su simpleza, ya que las técnicas son fáciles de entender y demostrar \cite{Parberry:1997}, y también su eficiencia, pues poseen complejidad $\mathcal{O}(n^2)$, lo que implica un tiempo proporcional a la superficie del tablero y por lo tanto dependiente del área que debe cubrir (para un tablero no cuadrado la complejidad sería $\mathcal{O}(n\times m) $ con \textit{n,m} las dimensiones del tablero). Por el contrario, la mayor desventaja del método es que no existe una regla general, es decir a pesar que todos los teoremas comparten la misma base, la elección va a depender de la configuración $m\times n$ del tablero.
+
+Otra técnica es usar el Algoritmo de Warnsdorff (para el problema del caballo), el cual funciona para tableros con dimensión mínima de $5\times 5$ y consiste en visitar las casillas menos asequibles lo más pronto posible con la finalidad de evitar posibles caminos sin salida y/o arrinconados en un futuro. La Heurística de Warnsdorff, funciona de la siguiente manera \cite{Squirrel:1996}:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.48\textwidth,height=7cm]{figures/heuristica.png}
+\caption{Esquema del algoritmo de Warnsdorff}
+\label{fig:warnsdorff}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.2\textwidth]{figures/warnsdorff.png}
+\caption{Soluci\'on hecha siguiendo la Heurística de Warnsdorff}
+\label{fig:warnsdorff}
+\end{figure}
+\\Sin embargo, se pueden presentar iteraciones en que existan 2 (n+1)-ésimas casillas válidas para una siguiente iteración. Aquí es donde nace la imperfección del algoritmo, pues si bien existen criterios de desempate que han sido creados después de numerosos estudios del algoritmo, y estos tienden a permitir elegir la casilla correcta, no son criterios que sirvan para todos los casos y pueden aún así originar dilemas difíciles de resolver a la hora de elegir un camino, y si se comete cualquier pequeño error a la hora de elegir la casilla, lo más probable es que el algoritmo termine fallando. Además, la Heurística de Warnsdoff no es confiable por si sola para tableros de dimensiones muy grandes (p.e. $n \geq 200)$, pues estos enfrentamientos de desempate se hacen más recurrentes. Aún así, la Heurística de Warnsdorff es bastante efectiva para los rangos sugeridos y una buena opción gracias a su patrón intuitivo y simpleza.   
+
+Algunas instancias del problema que son interesantes de resolver se relacionan con la forma del tablero $m \times n$. La más popular es la del tablero de ajedrez $8 \times 8$, la cual fue resuelta por Euler \cite{Euler:1759} hace siglos atrás. Parberry \cite{Parberry:1997} describe otros casos más específicos, tales como el tablero $n \times n$, $n \ge 5 \wedge n=\text{impar}$, en el cual existen tours cerrados que pasan por todos los espacios a excepción de una de las esquinas; tours para tableros de tipo $n \times (n+1), n \ge 6$ y algunas propiedades interesantes relacionadas con la simetría de tours para tableros $n \times n, n \ge 10, n$ divisible por $2$ pero no por $4$. Destacar que para cualquier caso, el tablero $n \times n$ mínimo para trabajar es el de $5\times 5$, ya que de considerar $n$ inferior a $5$ existirían espacios inalcanzables.
+
+En cuanto a aportes del problema, existen curiosos casos pequeños como el de una famosa partida de un torneo de ajedrez en la que uno de los participantes realizó 13 movimientos consecutivos que parecían seguir un Knight's Tour \cite{Shabazz:2010}. Por otro lado, hay areas en las que se han encontrado aplicaciones bastante útiles del Knight's Tour, un ejemplo podría ser su aplicación en el diseño de metodologías para el encriptado de imágenes \cite{Singh:2015}.   
+
+Por ultimo, un problema que benefició el entendimiento del problema del caballo es el de encontrar un camino hamiltoniano. Un camino de hamiltoniano es un camino que visita cada nodo de un grafo exactamente una vez, y de hecho un camino del caballo (para el problema) corresponde a un camino hamiltoniano en un grafo cuyos nodos representan las casillas  del tablero, y dos nodos est\'an conectados si un caballo puede moverse entre las casillas seg\'un las reglas del ajedrez \cite{Rosen/2002}. Los variados algoritmos que sirven para resolver el problema de encontrar un camino hamiltoniano en un grafo simplifican el desarrollo del problema del caballo. Sin embargo, se presentaron dos enfoques más apropiados para el caso.
+
+\section{Formalización y Modelo Matemático del Problema}
+Para representar el tablero de ajedrez se enumerarán las celdas como coordenadas en un plano, solo que para hacer más simple la comprensión del concepto de filas y columnas se decidió omitir la columna y fila $0$. Entonces, cada celda del tablero será definida como un par ordenado que irá desde $(1,1)$ hasta $(N, N)$, donde $N^{2}$ representa el número de celdas en el tablero.
+\noindent Por otra parte, se mencionó en la Introducción que el caballo tiene un movimiento en forma de “L”, pero ¿qué significa esto? El movimiento de “L” indica que el caballo se podrá mover dos celdas en una de las direcciones verticales u horizontales, y luego una celda en la dirección en la que no lo hizo antes.
+
+\begin{example}
+El Cuadro \ref{c2} que se muestra a continuación, muestra una solución para la instancia $n=5$, es decir, un tablero de 25 casillas, donde en cada casilla se muestra el "número" que representa el orden en que el caballo las visitó.
+\end{example}
+
+ \begin{table}[!htb]
+ \begin{center}
+    \begin{minipage}{.5\linewidth}
+      \caption{Tablero para $N=5$}
+      \centering
+        \begin{TAB}(e,0.2cm,0.2cm){|c|c|c|c|c|}{|c|c|c|c|c|}
+          5 & 22 & 17 & 12 & 7 \\
+          16 & 11 & 6 & 23 & 18) \\
+          21 & 4 & 25 & 8 & 13 \\
+          10 & 15 & 2 & 19 & 24 \\
+          3 & 20 & 9 & 14 & 1
+        \end{TAB}
+        \label{c2}
+    \end{minipage}%
+    \end{center}
+\end{table}
+Observar que todo par de casillas visitada consecutivamente, estan distanciados por el movimiento "L" del caballo.
+
+Ya formalizado el problema, lo siguiente es modelarlo matemáticamente. Como grupo se decidió por desechar la opción de utilizar un modelo de programación ya que, dadas las características del problema es más conveniente abordarlo desde la perspectiva de un problema de satisfacción de restricciones. En particular, la formulación de una función objetivo requería formalizar las restricciones del problema de un forma muy específica y poco intuitiva, a diferencia de un modelo con restricciones en el fue posible plantear las restricciones de una forma sencilla y también natural. Para modelar un problema de satisfacción de restricciones, se necesita definir el conjunto de variables, el dominio de las mismas, y las restricciones a las que se encontrará restringida cada solución.
+\medskip \newline
+\noindent\textbf{Variables}: Considerando n como el largo/ancho del tablero, tal como se planteó en la sección anterior, entonces la variables definidas para un tablero de tamaño $n \times n$ son:
+
+\begin{center}
+    $X = \{X_1, X_2, ..., X_{n^2}\}$,
+    
+    donde $X_i$ corresponde a la i-ésima casilla recorrida por el caballo.
+\end{center}
+
+\noindent\textbf{Dominio}: Los valores que pueden tomar las distintas variables corresponden a pares ordenados que indican la posición en que está posicionada la i-ésima variable:
+
+\begin{center}
+    $D_{X_i} = (u,v), \forall u,v \in  \{1, 2, ..., n\}$,
+\end{center}
+
+\noindent Es decir, cada variable representa una casilla del tablero.
+\medskip \newline
+\noindent\textbf{Restricciones}: En cuanto a las restricciones, se debe indicar qué requisitos debe cumplir una solución válida del problema. Como se busca encontrar la solución para un Knight's Tour ya sea abierto o cerrado, se han establecido tres restricciones para el caso abierto y una cuarta adicional para un tour cerrado:
+\medskip
+\begin{itemize}
+    \item \textit{alldifferent}$\left ( X_1,X_2,...,X_{n^{2}} \right )$
+\end{itemize}
+\medskip
+\noindent Esta es una de las reglas básicas que se debe cumplir en un Knight's Tour: un caballo no puede pisar 2 veces una misma casilla, a menos que sea un tour cerrado y en ese caso las casillas que coninciden deben ser la primera y la última. Por tanto, se necesita indicar que todo $X_i$ esté asociado a una casilla diferente, así asegurando que las $n^2$ casillas hayan sido recorridas en algún momento por el caballo.
+\medskip
+\begin{itemize}
+    \item $M=\{(2,1),(-2,1),(2,-1),(-2,-1),\\
+     (1,2),(-1,2),(1,-2),(-1,-2)\}$
+\end{itemize}
+\medskip
+\noindent Este conjunto corresponde a la definición de movimientos posibles del caballo. Es decir, esta restricción asegura que cada vector movimiento perteneciente a $M$ corresponda al movimiento de un caballo.
+\medskip
+\begin{itemize}
+    \item $\forall X_i , X_{i+1} \exists (d_x,d_y): \\X_i + (d_x,d_y) = X_{i+1}, (d_x,d_y) \in  M $
+\end{itemize}
+\medskip
+\noindent Finalmente, se encuentra la restricción que hace a un Knight's Tour un Knight's Tour, el definir cómo debe ser cada movimiento. Esta restricción establece que para que una solución sea válida, cada (i+1)-ésima casilla visitada debe haber sido visitada después de una i-ésima casilla que esté al alcance de un movimiento de un caballo, el cual está representado por el vector movimiento $(d_x,d_y)$. De esta manera, se asegura que todas las casillas fueron recorridas siguiendo el movimiento de la pieza de caballo.\\ 
+\section{Configuración Experimental}
+\section{Resultados}
+\section{Conclusiones \& Perspectivas}
+El Knight’s Tour es un problema que ha sido ampliamente estudiado, ya que al ser un caso particular de un problema de Hamilton su desarrollo resulta de gran interés para aportar al entendimiento general de esta categoría de problemas. El haber podido modelar el problema como CSP facilita la comprensión de su planteamiento, y entrega una base tanto para entender cómo funcionan distintos programas que resuelven Knight's Tour, así como aquellos que basan su funcionamiento en uno. Lo relevante del problema es cómo el mismo procedimiento (el movimiento del caballo) se puede aplicar a distintas configuraciones según el problema específico (las características del tablero), siendo necesario para mejorar su resolución la búsqueda de un método general y eficiente que se pueda aplicar a cualquier configuración.
+
+Lo que se hará a futuro es aplicar el modelo de satisfacción de restricciones planteado en esta entrega y resolver el Knight's Tour para encontrar tanto tours abierto como tours cerrados. También, al ser éste un problema común en el área de informática, se podría trabajar en el futuro con programas enfocados a resolver Knight’s Tours y comparar los tiempos utilizando distintos algoritmos para resolución de problemas CSP tales como \textit{backtracking} y \textit{forward checking}.
+
+\newpage
+\section{Referencias}
+
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+\\
+
+\end{document}
