@@ -29,18 +29,18 @@
 \maketitle
 
 \begin{abstract}
-\textbf{El protagonista de este art\'iculo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que a día de hoy sigue siendo de interés, debido a la interminable cantidad de soluciones distintas que se le han encontrado y a las aplicaciones que se le asocian. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundidad en qué consiste el problema y cómo puede ser abordado y solucionado de distintas maneras gracias al aporte de varios emblemáticos personajes de la matemática, finalizando con la presentación de un modelo CSP (problema de satisfacción de restricciones) para la resolución del problema.  }
+\textbf{El protagonista de este art\'iculo es el \textit{Knight's Tour Problem}, un antiguo problema matemático que a día de hoy sigue siendo de interés, debido a la interminable cantidad de soluciones distintas que se le han encontrado y a las aplicaciones que se le asocian. En el artículo se verá un pequeño repaso histórico del problema y conceptos relacionados, y se verá en profundidad en qué consiste el problema y cómo puede ser abordado y solucionado de distintas maneras gracias al aporte de varios emblemáticos personajes de la matemática, continuando luego con la presentación de un modelo CSP (problema de satisfacción de restricciones) para la resolución del problema, poniéndolo a prueba y analizando los resultados obtenidos .  }
 \end{abstract}
 
 \begin{IEEEkeywords}
-Knight's Tour Problem, Problema del Caballo, Leonhard Euler, Camino Hamiltoniano, Regla de Warnsdorff, Divide y Vencerás.
+Knight's Tour Problem, Problema del Caballo, Leonhard Euler, Camino Hamiltoniano, Regla de Warnsdorff, Divide y Vencerás, Modelo de Satisfacción de Restricciones.
 \end{IEEEkeywords}
 
 
 \section{Introducción}
 El \textit{Knight's Tour Problem} (KTP), o Problema del Caballo, tiene como objetivo encontrar una ruta o camino en un tablero de ajedr\'ez tal que el caballo visite todas las celdas del tablero una sola vez.
 El primer \textit{problema del caballo} data del siglo séptimo en un manuscrito \'arabe titulado \textit{La delicia de los inteligentes, una descripci\'on del ajedrez} y contiene dos soluciones en \cite{Murray:1913}. Sin embargo, no fue hasta 1766 que el problema fue analizado por primera vez en un articulo matem\'atico \cite{Euler:1759} por el conocido Leonhard Euler, que sentó bases para ensayos futuros. El concepto de este problema puede ser aplicado en procesamiento de imágenes, dado que el tablero de ajedrez puede emular una matriz de píxeles, desarrollo observable en \cite{Xiaoyong:2017}.\\
-En la secci\'on $II$ se estudiarán los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a más detalladamente con un ejemplo, dando luego el contexto acerca de las soluciones del problema y de problemas anteriores a éste. En la sección $III$ se formalizan matemáticamente los elementos del problema, para luego en la sección $IV$ definir el modelo CSP del problema. Finalmente se presentar\'an conclusiones y expectativas para el desarrollo de este problema a futuro.
+En la secci\'on $II$ se estudiarán los movimientos que puede realizar el caballo, se presentar\'a el problema y se explicar\'a más detalladamente con un ejemplo, dando luego el contexto acerca de las soluciones del problema y de problemas anteriores a éste. En la sección $III$ se formalizan matemáticamente los elementos del problema, para luego definir el modelo CSP del problema. En la sección  $IV$ se definirá la configuración experimentar de algunas instancias con las cuales aplicará el modelo CSP propuesto para ser resueltas, y en la sección $VI$ se analizarán los resultados, y se comparará el desempeño de esta técnica frente al de un algoritmo de fuerza bruta.  Finalmente se presentar\'an conclusiones final obtenidas por el equipo después del desarrollo del proyecto.
 
 \section{El Problema}
 El caballo tiene un movimiento inusual entre las piezas de ajedrez, se puede desplazar dos casillas horizontalmente y una casilla verticalmente o dos casillas en posición vertical y una horizontal. Con lo cual, el movimiento completo se parece a letra "$L$" \cite{Uehara:2019}. La Figura \ref{fig:moves} muestra a detalle cuales son las 8 casillas a las que puede acceder un caballo.
