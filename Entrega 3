@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage[thinlines]{easytable}
 \usepackage{url}
+\usepackage{float}
 \def\IEEEkeywordsname{Palabras Claves}
 \makeatletter
 \long\def\@makecaption#1#2{\ifx\@captype\@IEEEtablestring%
@@ -77,13 +78,13 @@ Otra técnica es usar el Algoritmo de Warnsdorff (para el problema del caballo),
 \centering
 \includegraphics[width=0.48\textwidth,height=7cm]{figures/heuristica.png}
 \caption{Esquema del algoritmo de Warnsdorff}
-\label{fig:warnsdorff}
+\label{fig:warnsdorff1}
 \end{figure}
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.2\textwidth]{figures/warnsdorff.png}
 \caption{Soluci\'on hecha siguiendo la Heurística de Warnsdorff}
-\label{fig:warnsdorff}
+\label{fig:warnsdorff2}
 \end{figure}
 \\Sin embargo, se pueden presentar iteraciones en que existan 2 (n+1)-ésimas casillas válidas para una siguiente iteración. Aquí es donde nace la imperfección del algoritmo, pues si bien existen criterios de desempate que han sido creados después de numerosos estudios del algoritmo, y estos tienden a permitir elegir la casilla correcta, no son criterios que sirvan para todos los casos y pueden aún así originar dilemas difíciles de resolver a la hora de elegir un camino, y si se comete cualquier pequeño error a la hora de elegir la casilla, lo más probable es que el algoritmo termine fallando. Además, la Heurística de Warnsdoff no es confiable por si sola para tableros de dimensiones muy grandes (p.e. $n \geq 200)$, pues estos enfrentamientos de desempate se hacen más recurrentes. Aún así, la Heurística de Warnsdorff es bastante efectiva para los rangos sugeridos y una buena opción gracias a su patrón intuitivo y simpleza.   
 
@@ -143,7 +144,7 @@ Ya formalizado el problema, lo siguiente es modelarlo matemáticamente. Como gru
     \item \textit{alldifferent}$\left ( X_1,X_2,...,X_{n^{2}} \right )$
 \end{itemize}
 \medskip
-\noindent Esta es una de las reglas básicas que se debe cumplir en un Knight's Tour: un caballo no puede pisar 2 veces una misma casilla, a menos que sea un tour cerrado y en ese caso las casillas que coninciden deben ser la primera y la última. Por tanto, se necesita indicar que todo $X_i$ esté asociado a una casilla diferente, así asegurando que las $n^2$ casillas hayan sido recorridas en algún momento por el caballo.
+\noindent Esta es una de las reglas básicas que se debe cumplir en un Knight's Tour: un caballo no puede pisar 2 veces una misma casilla, a menos que sea un tour cerrado y en ese caso las casillas que coinciden deben ser la primera y la última. Por tanto, se necesita indicar que todo $X_i$ esté asociado a una casilla diferente, así asegurando que las $n^2$ casillas hayan sido recorridas en algún momento por el caballo.
 \medskip
 \begin{itemize}
     \item $M=\{(2,1),(-2,1),(2,-1),(-2,-1),\\
@@ -156,19 +157,124 @@ Ya formalizado el problema, lo siguiente es modelarlo matemáticamente. Como gru
     \item $\forall X_i , X_{i+1} \exists (d_x,d_y): \\X_i + (d_x,d_y) = X_{i+1}, (d_x,d_y) \in  M $
 \end{itemize}
 \medskip
-\noindent Finalmente, se encuentra la restricción que hace a un Knight's Tour un Knight's Tour, el definir cómo debe ser cada movimiento. Esta restricción establece que para que una solución sea válida, cada (i+1)-ésima casilla visitada debe haber sido visitada después de una i-ésima casilla que esté al alcance de un movimiento de un caballo, el cual está representado por el vector movimiento $(d_x,d_y)$. De esta manera, se asegura que todas las casillas fueron recorridas siguiendo el movimiento de la pieza de caballo.\\ 
+\noindent Finalmente, se encuentra la restricción que hace a un Knight's Tour un Knight's Tour, el definir cómo debe ser cada movimiento. Esta restricción establece que para que una solución sea válida, cada (i+1)-ésima casilla visitada debe haber sido visitada después de una i-ésima casilla que esté al alcance de un movimiento de un caballo, el cual está representado por el vector movimiento $(d_x,d_y)$. De esta manera, se asegura que todas las casillas fueron recorridas siguiendo el movimiento de la pieza de caballo.
+
 \section{Configuración Experimental}
+
+Considerando las caracter\'isticas del problema, se determin\'o que las instancias a resolver van a diferir solo en el valor $n$ que corresponde al tama\~no $n\times n$ del tablero. A partir de esto se procede a definir los dos tipos de instancias que se van a analizar:
+
+\medskip
+\begin{itemize}
+    \item Knight's Tour cualquiera:  Encontrar un Knight's Tour ya sea abierto o cerrado a partir de una casilla inicial. La instancia est\'a sujeta a las restricciones descritas en la Secci\'on III, es decir los valores de las variables deben ser todos distintos, el movimiento del caballo se encuentra restringido a $M$ y se debe cumplir que valores sucesivos deben ser alcanzables entre si. En cuanto al criterio de selecci\'on de la pr\'oxima casilla, se establece un orden prioritario que se explicar\'a al momento de definir la casilla inicial. Por \'ultimo, con respecto a los valores de las variables y el dominio, estos van a depender del tamaño del tablero, entonces para una instancias $6 \times 6$ las variables ser\'an $X_i = \{ X_1,X_2,...,X_{36} \}$ y el dominio $D_{X_i} = \{ 1,2,...,36 \}$.
+    \medskip
+    \item Knight's Tour cerrado: Encontrar un Knight's Tour cerrado (circuito) a partir de una casilla inicial. Para esta instancia se propone utilizar la restricci\'on para formar circuitos \textit{circuit} en vez de \textit{alldifferent}, por lo que si se considera un grafo a partir de las casillas del tablero, los movimientos posibles $M$ vienen siendo los arcos entre los nodos. El objetivo de usar este enfoque es aprovechar las herramientas que proveen los Solver de Programaci\'on con Restricciones. Adem\'as y a diferencia del caso anterior, se utilizar\'a la Heur\'istica de Warnsdorff descrita en la Secci\'on II como criterio para seleccionar la pr\'oxima casilla del caballo. Las variables y el dominio son similares y dependenr\'an del tama\~no $n \times n$ del tablero.
+\end{itemize}
+\medskip
+
+Para ambas instancias la casilla inicial se define como $X_1$ en la esquina superior izquierda del tablero. Esta selecci\'on es relevante en particular para el primer tipo de instancia, ya que se busca que el caballo se mueva hacia la ``derecha y abajo'' en el tablero, por lo que los movimientos $(i,j)$ con $i,j > 0$ tienen prioridad. Entonces, la cola de prioridad para el primer tipo de instancia se define como:
+\begin{itemize}
+    \item $Q=\{(1,2),(2,1),(-1,2),(1,-2),\\
+     (-2,1),(2,-1),(-2,-1),(-1,-2)\}$
+\end{itemize}
+
+Considerando lo anterior, para la instancia $6\times 6$ el estado inicial de ambos casos es:
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[scale=0.6]{figures/BrdSec4.png}
+\caption{Estado inicial de las instancias}
+\end{figure}
+
+Con respecto al ambiente de resoluci\'on de las instancias, el primer tipo de instancia se resolver\'a usando un algoritmo \footnote{https://github.com/nchcl/CodigosOpti} en lenguaje C++ que implementa backtracking simple sujeto a las restricciones ya descritas, mientras que para el segundo tipo de instancia se utilizar\'a un Solver de Programaci\'on con Restricciones implementado en la librer\'ia de C++ Gecode \cite{gecode}. Se medir\'a el tiempo para distintas instancias usando el comando de bash \textit{time} antes de correr cada programa. Las especificaciones t\'ecnicas de hardware y software son:
+
+\medskip
+\begin{itemize}
+    \item Hardware
+        \begin{itemize}
+            \item CPU: AMD Ryzen 5 2600X 3.6GHz, 6 cores
+        \end{itemize}
+    \item Software
+        \begin{itemize}
+            \item SO: Debian 10.0.0 64-bit alojado en una m\'aquina virtual \textit{VMware}
+            \item RAM: 8GB (m\'aquina virtual)
+            \item Compilador: GNU Compiler Collection (GCC)
+            \item Librer\'ias: Gecode 6.1.0
+        \end{itemize}
+\end{itemize}
+
 \section{Resultados}
+
+De acuerdo con lo establecido en la secci\'on anterior, se resolvieron ambos tipos de instancias para distintos tableros, con la \'unica condici\'on en la elecci\'on del valor $n$ que el producto $n\times n$ debe ser par para que exista un circuito. Se defini\'o un \textit{timeout} de ejecuci\'on igual a $60$ [s], lo que significa que para tiempos superiores a ese valor la ejecuci\'on se detiene y se considera la instancia como fallida. Se tom\'o el promedio de tres ejecuciones para cada instancia, resultados que se muestran a continuaci\'on. \textit{Backtracking} corresponde al primer tipo de instancia y \textit{Solver} al segundo:
+\begin{table}[h!]
+\centering
+\caption{Tiempo para distintas instancias}
+\begin{tabular}{|c|c|c|}
+\hline
+Tablero & Backtracking  & Solver            \\ \hline
+$6\times 6$      & 0.074 {[}s{]} & 0.007 {[}s{]}  \\ \hline
+$8\times 8$      & 8.983 {[}s{]} & 0.007 {[}s{]}  \\ \hline
+$10\times 10$    & -             & 0.008 {[}s{]}  \\ \hline
+$50\times 50$    & -             & 0.899 {[}s{]}  \\ \hline
+$70\times 70$    & -             & 3.761 {[}s{]}  \\ \hline
+$90\times 90$    & -             & 11.136 {[}s{]} \\ \hline
+$100\times 100$  & -             & 18.635 {[}s{]} \\ \hline
+$110\times 110$  & -             & 30.221 {[}s{]} \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[scale=0.6]{figures/Rplot.png}
+\caption{Gr\'afico del tiempo entre ambos algoritmos}
+\end{figure}
+
+Como se puede observar, el Solver no solo resolvi\'o un problema sujeto a un condici\'on m\'as compleja como lo es formar un circuito, sino que en todo los casos lo hizo en menos tiempo que el algoritmo de Backtracking simple. Entonces, resulta necesario hacer un an\'alisis de los detalles de ambos algoritmos, particularmente en lo que respecta a criterios de decisi\'on o divisores.
+
+En el caso del algoritmo de Backtracking simple, el orden de prioridad de movimientos no es un mal divisor. Considerando la misma casilla inicial, es superior a cualquier a otra combinaci\'on de movimientos y es significativamente superior a una prioridad aleatoria de movimientos. De hecho, a pesar de ser un algoritmo simple resuelve el tablero $6\times 6$ en poco tiempo y el tablero $8\times 8$ en un tiempo razonable. El objetivo de este criterio es evitar los loops al aplicar backtracking, y para tableros peque\~nos cumple su objetivo. Sin embargo, su gran debilidad es que para casos en donde el n\'umero de casillas aumenta en forma considerable, se llega a un punto en que la prioridad de los movimientos ya no es ventajosa y el programa se queda atrapado en loops. En la siguiente tabla se muestran las iteraciones del algoritmo para cada caso, siendo el \'ultimo las iteraciones antes de la interrupci\'on:
+
+\begin{table}[!htbp]
+\centering
+\caption{Iteraciones del algoritmo de backtracking}
+\begin{tabular}{|c|c|}
+\hline
+Tablero & Iteraciones \\ \hline
+$6\times 6$      & $107212$    \\ \hline
+$8\times 8$      & $14019567$  \\ \hline
+$10\times 10$    & $92053428$  \\ \hline
+\end{tabular}
+\end{table}
+
+Continuando con el Solver, hay que comenzar se\~nalando que la librer\'ia Gecode proporciona un solver muy completo, con una cantidad considerable de predicados ya definidos y tambi\'en posee la caracter\'istica de entregar informaci\'on sobre la instancia. A\'un as\'i, un solver no es m\'agico y la raz\'on del por qu\'e este algoritmo es superior al anterior se encuentra en la Heur\'istica de Warnsdorff. Este es un algoritmo ya probado el cual como se mencion\'o en la Secci\'on II, cumple un objetivo similar al criterio de decisi\'on del algoritmo de Backtracking, que es evitar caminos sin salidas y que en t\'erminos de c\'omputo se traduce en loops. Un aspecto notable de la Heur\'istica de Warnsdorff es que tambi\'en facilita encontrar circuitos en un Knight's Tour, por lo que en este caso el hecho de que el Solver resolviera una versi\'on m\'as compleja que el algoritmo de Backtracking no afecta para casos como los $n$ analizados. 
+
+Por \'ultimo, se muestra el n\'umero de nodos del \'arbol de b\'usqueda en cada instancia, destacando el crecimiento del \'arbol:
+
+\begin{table}[!htbp]
+\centering
+\caption{Nodos de los \'arboles del solver}
+\begin{tabular}{|c|c|}
+\hline
+Tablero & Nodos \\ \hline
+$6\times 6$       & 19    \\ \hline
+$8\times 8$       & 48    \\ \hline
+$10\times 10$      & 82    \\ \hline
+$30\times 30$      & 867   \\ \hline
+$50\times 50$      & 2444  \\ \hline
+$70\times 70$      & 4810  \\ \hline
+$90\times 90$      & 7592  \\ \hline
+$100\times 100$     & 9875  \\ \hline
+$110\times 110$     & 11000 \\ \hline
+\end{tabular}
+\end{table}
+
 \section{Conclusiones \& Perspectivas}
 El Knight’s Tour es un problema que ha sido ampliamente estudiado, ya que al ser un caso particular de un problema de Hamilton su desarrollo resulta de gran interés para aportar al entendimiento general de esta categoría de problemas. El haber podido modelar el problema como CSP facilita la comprensión de su planteamiento, y entrega una base tanto para entender cómo funcionan distintos programas que resuelven Knight's Tour, así como aquellos que basan su funcionamiento en uno. Lo relevante del problema es cómo el mismo procedimiento (el movimiento del caballo) se puede aplicar a distintas configuraciones según el problema específico (las características del tablero), siendo necesario para mejorar su resolución la búsqueda de un método general y eficiente que se pueda aplicar a cualquier configuración.
 
 Lo que se hará a futuro es aplicar el modelo de satisfacción de restricciones planteado en esta entrega y resolver el Knight's Tour para encontrar tanto tours abierto como tours cerrados. También, al ser éste un problema común en el área de informática, se podría trabajar en el futuro con programas enfocados a resolver Knight’s Tours y comparar los tiempos utilizando distintos algoritmos para resolución de problemas CSP tales como \textit{backtracking} y \textit{forward checking}.
 
 \newpage
-\section{Referencias}
 
 \bibliographystyle{plain}
 \bibliography{bibliografia}
-\\
+
 
 \end{document}
