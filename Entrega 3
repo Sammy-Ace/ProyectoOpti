@@ -177,7 +177,7 @@ Para ambas instancias la casilla inicial se define como $X_1$ en la esquina supe
      (-2,1),(2,-1),(-2,-1),(-1,-2)\}$
 \end{itemize}
 
-Considerando lo anterior, para la instancia $6\times 6$ el estado inicial de ambos casos es:
+Considerando lo anterior, para la instancia $8\times 8$ el estado inicial de ambos casos es:
 
 \begin{figure}[!htbp]
 \centering
